@@ -17,7 +17,7 @@ namespace CAFU.Routing.Domain.Translator {
             throw new System.NotImplementedException();
         }
 
-        public IObservable<SceneModel> TranslateAsObservable(SceneEntity entity) {
+        public IObservable<SceneModel> TranslateAsync(SceneEntity entity) {
             SceneModel sceneModel = new SceneModel();
             if (entity.UnityScene.IsValid()) {
                 sceneModel.Name = entity.UnityScene.name;
@@ -30,7 +30,7 @@ namespace CAFU.Routing.Domain.Translator {
             return Observable.Return(sceneModel);
         }
 
-        public IObservable<SceneEntity> TranslateAsObservable(SceneModel model) {
+        public IObservable<SceneEntity> TranslateAsync(SceneModel model) {
             throw new System.NotImplementedException();
         }
 
