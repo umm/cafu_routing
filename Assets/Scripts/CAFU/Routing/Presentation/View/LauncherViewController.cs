@@ -1,4 +1,5 @@
-﻿using CAFU.Core.Presentation;
+﻿using CAFU.Core.Domain;
+using CAFU.Core.Presentation;
 using CAFU.Routing.Domain.UseCase;
 using CAFU.Routing.Presentation.Presenter;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityModule;
 
 namespace CAFU.Routing.Presentation.View {
 
-    public class LauncherViewController : ViewControllerBase<LauncherPresenter> {
+    public class LauncherViewController : ViewControllerBase<LauncherPresenter>, IViewControllerBuilder {
 
         [SerializeField][SceneName]
         private string initialScene;
@@ -21,9 +22,9 @@ namespace CAFU.Routing.Presentation.View {
             this.Presenter.LaunchInitialScene(this.InitialScene);
         }
 
-        protected override void Build() {
+        public void Build() {
             this.Presenter = new LauncherPresenter() {
-                RoutingUseCase = RoutingUseCase.GetOrCreateInstance(),
+                RoutingUseCase = UseCaseFactory.GetOrCreateInstance<RoutingUseCase>(),
             };
         }
 

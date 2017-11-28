@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Domain.UseCase {
 
-    public class RoutingUseCase : UseCaseBaseAsSingleton<RoutingUseCase> {
+    public class RoutingUseCase : IUseCase, IUseCaseBuilder {
 
-        protected override void Build() {
+        public void Build() {
             this.RoutingRepository = new RoutingRepository();
             this.RoutingTranslator = new RoutingTranslator();
         }
@@ -67,7 +67,7 @@ namespace CAFU.Routing.Domain.UseCase {
         private IObservable<SceneModel> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode) {
             IObservable<SceneModel> stream = this.RoutingRepository
                 .LoadSceneAsObservable(sceneName, loadSceneMode)
-                .SelectMany(x => this.RoutingTranslator.TranslateAsObservable(x))
+                .SelectMany(x => this.RoutingTranslator.TranslateAsync(x))
                 .Share();
             // OnComplete を流してしまうと、Subject が閉じてしまうので OnNext, OnError のみを流す
             stream.Subscribe(
@@ -80,7 +80,7 @@ namespace CAFU.Routing.Domain.UseCase {
         private IObservable<SceneModel> UnloadSceneAsObservable(string sceneName) {
             IObservable<SceneModel> stream = this.RoutingRepository
                 .UnloadSceneAsObservable(sceneName)
-                .SelectMany(x => this.RoutingTranslator.TranslateAsObservable(x))
+                .SelectMany(x => this.RoutingTranslator.TranslateAsync(x))
                 .Share();
             // OnComplete を流してしまうと、Subject が閉じてしまうので OnNext, OnError のみを流す
             stream.Subscribe(

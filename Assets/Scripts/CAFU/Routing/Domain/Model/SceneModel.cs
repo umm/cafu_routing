@@ -3,7 +3,7 @@ using CAFU.Core.Presentation;
 
 namespace CAFU.Routing.Domain.Model {
 
-    public class SceneModel : ModelBase {
+    public class SceneModel : IModel {
 
         public string Name { get; set; }
 
