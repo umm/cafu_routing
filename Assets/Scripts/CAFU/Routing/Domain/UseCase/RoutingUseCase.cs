@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Domain.UseCase {
 
-    public class RoutingUseCase : IUseCase, IUseCaseBuilder {
+    public class RoutingUseCase : IUseCaseAsSingleton, IUseCaseBuilder {
 
         public void Build() {
             this.RoutingRepository = new RoutingRepository();
