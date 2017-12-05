@@ -18,8 +18,7 @@ namespace CAFU.Routing.Presentation.View {
             }
         }
 
-        protected override void Start() {
-            base.Start();
+        private void Start() {
             this.Presenter.LaunchInitialScene(this.InitialScene);
         }
 
