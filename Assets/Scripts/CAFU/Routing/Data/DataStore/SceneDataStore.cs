@@ -2,12 +2,13 @@
 using CAFU.Core.Data;
 using CAFU.Routing.Data.Entity;
 using UniRx;
+using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Data.DataStore {
 
     public interface ISceneDataStore : IDataStore {
 
-        IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode);
+        IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode);
 
         IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName);
 
@@ -18,7 +19,7 @@ namespace CAFU.Routing.Data.DataStore {
 
         private Dictionary<string, SceneEntity> sceneEntityCacheMap;
 
-        public Dictionary<string, SceneEntity> SceneEntityCacheMap {
+        private Dictionary<string, SceneEntity> SceneEntityCacheMap {
             get {
                 if (this.sceneEntityCacheMap == default(Dictionary<string, SceneEntity>)) {
                     this.sceneEntityCacheMap = new Dictionary<string, SceneEntity>();
@@ -30,16 +31,16 @@ namespace CAFU.Routing.Data.DataStore {
             }
         }
 
-        public IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode) {
+        public IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode) {
             if (this.SceneEntityCacheMap.ContainsKey(sceneName)) {
                 return Observable.Throw<SceneEntity>(new System.ArgumentException(string.Format("Scene '{0}' already has loaded.", sceneName)));
             }
-            return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, loadSceneMode)
+            return SceneManager.LoadSceneAsync(sceneName, loadSceneMode)
                 .AsObservable()
                 .Select(
                     (_) => {
                         SceneEntity sceneEntity = new SceneEntity() {
-                            UnityScene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName)
+                            UnityScene = SceneManager.GetSceneByName(sceneName)
                         };
                         this.SceneEntityCacheMap[sceneName] = sceneEntity;
                         return sceneEntity;
@@ -55,10 +56,10 @@ namespace CAFU.Routing.Data.DataStore {
                 }
                 // エディタ実行の場合のみ、初期シーンの直接読み込みを考慮して値を疑似構築する
                 this.SceneEntityCacheMap[sceneName] = new SceneEntity() {
-                    UnityScene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName),
+                    UnityScene = SceneManager.GetSceneByName(sceneName),
                 };
             }
-            return UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(sceneName)
+            return SceneManager.UnloadSceneAsync(sceneName)
                 .AsObservable()
                 .Select(
                     (_) => {
