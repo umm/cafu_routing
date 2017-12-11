@@ -40,6 +40,7 @@ namespace CAFU.Routing.Data.DataStore {
                 .Select(
                     (_) => {
                         SceneEntity sceneEntity = new SceneEntity() {
+                            Name = sceneName,
                             UnityScene = SceneManager.GetSceneByName(sceneName)
                         };
                         this.SceneEntityCacheMap[sceneName] = sceneEntity;
@@ -56,6 +57,7 @@ namespace CAFU.Routing.Data.DataStore {
                 }
                 // エディタ実行の場合のみ、初期シーンの直接読み込みを考慮して値を疑似構築する
                 this.SceneEntityCacheMap[sceneName] = new SceneEntity() {
+                    Name = sceneName,
                     UnityScene = SceneManager.GetSceneByName(sceneName),
                 };
             }
