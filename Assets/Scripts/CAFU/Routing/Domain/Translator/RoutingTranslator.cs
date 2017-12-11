@@ -18,9 +18,10 @@ namespace CAFU.Routing.Domain.Translator {
         }
 
         public IObservable<SceneModel> TranslateAsync(SceneEntity entity) {
-            SceneModel sceneModel = new SceneModel();
+            SceneModel sceneModel = new SceneModel {
+                Name = entity.Name,
+            };
             if (entity.UnityScene.IsValid()) {
-                sceneModel.Name = entity.UnityScene.name;
                 sceneModel.ViewController = entity.UnityScene
                     .GetRootGameObjects()
                     .ToList()
