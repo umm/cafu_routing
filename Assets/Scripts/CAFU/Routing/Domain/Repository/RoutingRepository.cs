@@ -1,4 +1,4 @@
-﻿using CAFU.Core.Domain;
+﻿using CAFU.Core.Domain.Repository;
 using CAFU.Routing.Data.DataStore;
 using UniRx;
 
