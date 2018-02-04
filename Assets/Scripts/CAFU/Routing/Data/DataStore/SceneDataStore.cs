@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CAFU.Core.Data.DataStore;
 using CAFU.Routing.Data.Entity;
 using UniRx;
@@ -35,7 +34,7 @@ namespace CAFU.Routing.Data.DataStore {
 
         public IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode) {
             if (this.SceneEntityCacheMap.ContainsKey(sceneName)) {
-                return Observable.Throw<SceneEntity>(new ArgumentException(string.Format("Scene '{0}' already has loaded.", sceneName)));
+                return Observable.Throw<SceneEntity>(new System.ArgumentException(string.Format("Scene '{0}' already has loaded.", sceneName)));
             }
             return SceneManager.LoadSceneAsync(sceneName, loadSceneMode)
                 .AsObservable()
@@ -55,7 +54,7 @@ namespace CAFU.Routing.Data.DataStore {
             if (!this.SceneEntityCacheMap.ContainsKey(sceneName)) {
                 // エディタ実行でない場合には「読み込まれていない」旨を Exception として Throw する
                 if (!Application.isEditor) {
-                    return Observable.Throw<SceneEntity>(new ArgumentException(string.Format("Scene '{0}' has not loaded yet.", sceneName)));
+                    return Observable.Throw<SceneEntity>(new System.ArgumentException(string.Format("Scene '{0}' has not loaded yet.", sceneName)));
                 }
                 // エディタ実行の場合のみ、初期シーンの直接読み込みを考慮して値を疑似構築する
                 this.SceneEntityCacheMap[sceneName] = new SceneEntity() {
