@@ -26,7 +26,7 @@
     "scripts"
   ],
   "dependencies": {
-    "@umm/cafu_core": "^2.0.0-beta.4",
+    "@umm/cafu_core": "^2.0.0-beta.6",
     "@umm/scene_attribute": "^1.0.0",
     "glob": "^7.1.2",
     "mkdirp": "^0.5.1",
