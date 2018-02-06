@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CAFU.Core.Data.DataStore;
+using CAFU.Core.Utility;
 using CAFU.Routing.Data.Entity;
 using UniRx;
 using UnityEngine;
@@ -16,7 +17,11 @@ namespace CAFU.Routing.Data.DataStore {
     }
 
     // FIXME: Scenes in Build 版と AssetBundle 版とでクラスを分ける
-    public class SceneDataStore : ISceneDataStore {
+    public class SceneDataStore : ISceneDataStore, ISingleton {
+
+        public class Factory : DefaultDataStoreFactory<Factory, SceneDataStore> {
+
+        }
 
         private Dictionary<string, SceneEntity> sceneEntityCacheMap;
 

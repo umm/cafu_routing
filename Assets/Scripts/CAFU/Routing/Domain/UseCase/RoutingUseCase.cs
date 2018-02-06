@@ -7,18 +7,17 @@ using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Domain.UseCase {
 
-    public class RoutingUseCase : IUseCaseAsSingleton {
+    public class RoutingUseCase : ISingletonUseCase {
 
         // FIXME: Use Zenject
-        public class Factory : IUseCaseFactory<RoutingUseCase> {
+        public class Factory : DefaultUseCaseFactory<Factory, RoutingUseCase> {
 
-            public RoutingUseCase Create() {
-                return new RoutingUseCase() {
-                    LoadSceneSubject = new Subject<SceneModel>(),
-                    UnloadSceneSubject = new Subject<SceneModel>(),
-                    RoutingRepository = new RoutingRepository(),
-                    RoutingTranslator = new RoutingTranslator(),
-                };
+            protected override void Initialize(RoutingUseCase instance) {
+                base.Initialize(instance);
+                instance.LoadSceneSubject = new Subject<SceneModel>();
+                instance.UnloadSceneSubject = new Subject<SceneModel>();
+                instance.RoutingRepository = RoutingRepository.Factory.Instance.Create();
+                instance.RoutingTranslator = RoutingTranslator.Factory.Instance.Create();
             }
 
         }

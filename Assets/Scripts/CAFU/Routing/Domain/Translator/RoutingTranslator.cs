@@ -9,6 +9,10 @@ namespace CAFU.Routing.Domain.Translator {
 
     public class RoutingTranslator : IAsyncModelTranslator<SceneEntity, SceneModel> {
 
+        public class Factory : DefaultTranslatorFactory<Factory, RoutingTranslator> {
+
+        }
+
         public IObservable<SceneModel> TranslateAsObservable(SceneEntity entity) {
             SceneModel sceneModel = new SceneModel {
                 Name = entity.Name,
