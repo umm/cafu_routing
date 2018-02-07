@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
-using CAFU.Core.Data;
+using CAFU.Core.Data.DataStore;
+using CAFU.Core.Utility;
 using CAFU.Routing.Data.Entity;
 using UniRx;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Data.DataStore {
@@ -15,7 +17,11 @@ namespace CAFU.Routing.Data.DataStore {
     }
 
     // FIXME: Scenes in Build 版と AssetBundle 版とでクラスを分ける
-    public class SceneDataStore : ISceneDataStore {
+    public class SceneDataStore : ISceneDataStore, ISingleton {
+
+        public class Factory : DefaultDataStoreFactory<Factory, SceneDataStore> {
+
+        }
 
         private Dictionary<string, SceneEntity> sceneEntityCacheMap;
 
@@ -52,7 +58,7 @@ namespace CAFU.Routing.Data.DataStore {
         public IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName) {
             if (!this.SceneEntityCacheMap.ContainsKey(sceneName)) {
                 // エディタ実行でない場合には「読み込まれていない」旨を Exception として Throw する
-                if (!UnityEngine.Application.isEditor) {
+                if (!Application.isEditor) {
                     return Observable.Throw<SceneEntity>(new System.ArgumentException(string.Format("Scene '{0}' has not loaded yet.", sceneName)));
                 }
                 // エディタ実行の場合のみ、初期シーンの直接読み込みを考慮して値を疑似構築する

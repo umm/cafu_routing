@@ -1,5 +1,5 @@
 ﻿using System;
-using CAFU.Core.Presentation;
+using CAFU.Core.Presentation.Presenter;
 using CAFU.Routing.Domain.UseCase;
 using UnityEngine.SceneManagement;
 
@@ -7,9 +7,19 @@ namespace CAFU.Routing.Presentation.Presenter {
 
     public class LauncherPresenter : IPresenter {
 
+        // FIXME: Use Zenject
+        public class Factory : DefaultPresenterFactory<Factory, LauncherPresenter> {
+
+            protected override void Initialize(LauncherPresenter instance) {
+                base.Initialize(instance);
+                instance.RoutingUseCase = RoutingUseCase.Factory.Instance.Create();
+            }
+
+        }
+
         private const string LAUNCHER_SCENE_NAME = "Launcher";
 
-        public RoutingUseCase RoutingUseCase { private get; set; }
+        private RoutingUseCase RoutingUseCase { get; set; }
 
         public void LaunchInitialScene(string sceneName) {
             if (sceneName == LAUNCHER_SCENE_NAME) {

@@ -1,5 +1,5 @@
-﻿using CAFU.Core.Domain;
-using CAFU.Core.Presentation;
+﻿using CAFU.Core.Domain.Model;
+using CAFU.Core.Presentation.View;
 
 namespace CAFU.Routing.Domain.Model {
 
@@ -7,7 +7,7 @@ namespace CAFU.Routing.Domain.Model {
 
         public string Name { get; set; }
 
-        public IViewController ViewController { get; set; }
+        public IController Controller { get; set; }
 
     }
 

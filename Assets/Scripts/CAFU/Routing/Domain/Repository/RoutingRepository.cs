@@ -1,4 +1,4 @@
-﻿using CAFU.Core.Domain;
+﻿using CAFU.Core.Domain.Repository;
 using CAFU.Routing.Data.DataStore;
 using UniRx;
 
@@ -6,16 +6,16 @@ namespace CAFU.Routing.Domain.Repository {
 
     public class RoutingRepository : IRepository {
 
-        private ISceneDataStore sceneDataStore;
+        public class Factory : DefaultRepositoryFactory<Factory, RoutingRepository> {
 
-        private ISceneDataStore SceneDataStore {
-            get {
-                if (this.sceneDataStore == default(ISceneDataStore)) {
-                    this.sceneDataStore = CreateSceneDataStore();
-                }
-                return this.sceneDataStore;
+            protected override void Initialize(RoutingRepository instance) {
+                base.Initialize(instance);
+                instance.SceneDataStore = Data.DataStore.SceneDataStore.Factory.Instance.Create();
             }
+
         }
+
+        private ISceneDataStore SceneDataStore { get; set; }
 
         public IObservable<Data.Entity.SceneEntity> LoadSceneAsObservable(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode) {
             return this.SceneDataStore.LoadSceneAsObservable(sceneName, loadSceneMode);
@@ -23,11 +23,6 @@ namespace CAFU.Routing.Domain.Repository {
 
         public IObservable<Data.Entity.SceneEntity> UnloadSceneAsObservable(string sceneName) {
             return this.SceneDataStore.UnloadSceneAsObservable(sceneName);
-        }
-
-        // 暫定的に Repository 側に Factory メソッドを移動させてみる
-        private static ISceneDataStore CreateSceneDataStore() {
-            return new SceneDataStore();
         }
 
     }

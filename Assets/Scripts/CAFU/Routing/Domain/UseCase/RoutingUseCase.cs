@@ -1,4 +1,4 @@
-﻿using CAFU.Core.Domain;
+﻿using CAFU.Core.Domain.UseCase;
 using CAFU.Routing.Domain.Model;
 using CAFU.Routing.Domain.Repository;
 using CAFU.Routing.Domain.Translator;
@@ -7,13 +7,19 @@ using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Domain.UseCase {
 
-    public class RoutingUseCase : IUseCaseAsSingleton, IUseCaseBuilder {
+    public class RoutingUseCase : ISingletonUseCase {
 
-        public void Build() {
-            this.LoadSceneSubject = new Subject<SceneModel>();
-            this.UnloadSceneSubject = new Subject<SceneModel>();
-            this.RoutingRepository = new RoutingRepository();
-            this.RoutingTranslator = new RoutingTranslator();
+        // FIXME: Use Zenject
+        public class Factory : DefaultUseCaseFactory<Factory, RoutingUseCase> {
+
+            protected override void Initialize(RoutingUseCase instance) {
+                base.Initialize(instance);
+                instance.LoadSceneSubject = new Subject<SceneModel>();
+                instance.UnloadSceneSubject = new Subject<SceneModel>();
+                instance.RoutingRepository = RoutingRepository.Factory.Instance.Create();
+                instance.RoutingTranslator = RoutingTranslator.Factory.Instance.Create();
+            }
+
         }
 
         private RoutingRepository RoutingRepository { get; set; }
@@ -35,7 +41,7 @@ namespace CAFU.Routing.Domain.UseCase {
         public IObservable<SceneModel> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode) {
             IObservable<SceneModel> stream = this.RoutingRepository
                 .LoadSceneAsObservable(sceneName, loadSceneMode)
-                .SelectMany(x => this.RoutingTranslator.TranslateAsync(x))
+                .SelectMany(x => this.RoutingTranslator.TranslateAsObservable(x))
                 .Share();
             // OnComplete を流してしまうと、Subject が閉じてしまうので OnNext, OnError のみを流す
             stream
@@ -49,7 +55,7 @@ namespace CAFU.Routing.Domain.UseCase {
         public IObservable<SceneModel> UnloadSceneAsObservable(string sceneName) {
             IObservable<SceneModel> stream = this.RoutingRepository
                 .UnloadSceneAsObservable(sceneName)
-                .SelectMany(x => this.RoutingTranslator.TranslateAsync(x))
+                .SelectMany(x => this.RoutingTranslator.TranslateAsObservable(x))
                 .Share();
             // OnComplete を流してしまうと、Subject が閉じてしまうので OnNext, OnError のみを流す
             stream
