@@ -8,11 +8,11 @@ namespace CAFU.Routing.Presentation.Presenter {
     public class LauncherPresenter : IPresenter {
 
         // FIXME: Use Zenject
-        public class Factory : DefaultPresenterFactory<Factory, LauncherPresenter> {
+        public class Factory : DefaultPresenterFactory<LauncherPresenter> {
 
             protected override void Initialize(LauncherPresenter instance) {
                 base.Initialize(instance);
-                instance.RoutingUseCase = RoutingUseCase.Factory.Instance.Create();
+                instance.RoutingUseCase = new RoutingUseCase.Factory().Create();
             }
 
         }

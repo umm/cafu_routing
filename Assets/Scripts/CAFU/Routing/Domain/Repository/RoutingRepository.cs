@@ -6,11 +6,11 @@ namespace CAFU.Routing.Domain.Repository {
 
     public class RoutingRepository : IRepository {
 
-        public class Factory : DefaultRepositoryFactory<Factory, RoutingRepository> {
+        public class Factory : DefaultRepositoryFactory<RoutingRepository> {
 
             protected override void Initialize(RoutingRepository instance) {
                 base.Initialize(instance);
-                instance.SceneDataStore = Data.DataStore.SceneDataStore.Factory.Instance.Create();
+                instance.SceneDataStore = new SceneDataStore.Factory().Create();
             }
 
         }

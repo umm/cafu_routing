@@ -19,7 +19,7 @@ namespace CAFU.Routing.Data.DataStore {
     // FIXME: Scenes in Build 版と AssetBundle 版とでクラスを分ける
     public class SceneDataStore : ISceneDataStore, ISingleton {
 
-        public class Factory : DefaultDataStoreFactory<Factory, SceneDataStore> {
+        public class Factory : DefaultDataStoreFactory<SceneDataStore> {
 
         }
 

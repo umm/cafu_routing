@@ -10,14 +10,14 @@ namespace CAFU.Routing.Domain.UseCase {
     public class RoutingUseCase : ISingletonUseCase {
 
         // FIXME: Use Zenject
-        public class Factory : DefaultUseCaseFactory<Factory, RoutingUseCase> {
+        public class Factory : DefaultUseCaseFactory<RoutingUseCase> {
 
             protected override void Initialize(RoutingUseCase instance) {
                 base.Initialize(instance);
                 instance.LoadSceneSubject = new Subject<SceneModel>();
                 instance.UnloadSceneSubject = new Subject<SceneModel>();
-                instance.RoutingRepository = RoutingRepository.Factory.Instance.Create();
-                instance.RoutingTranslator = RoutingTranslator.Factory.Instance.Create();
+                instance.RoutingRepository = new RoutingRepository.Factory().Create();
+                instance.RoutingTranslator = new RoutingTranslator.Factory().Create();
             }
 
         }
