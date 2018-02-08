@@ -9,7 +9,7 @@ namespace CAFU.Routing.Domain.Translator {
 
     public class RoutingTranslator : IAsyncModelTranslator<SceneEntity, SceneModel> {
 
-        public class Factory : DefaultTranslatorFactory<Factory, RoutingTranslator> {
+        public class Factory : DefaultTranslatorFactory<RoutingTranslator> {
 
         }
 
