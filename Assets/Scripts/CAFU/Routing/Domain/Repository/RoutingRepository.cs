@@ -1,6 +1,7 @@
 ﻿using CAFU.Core.Domain.Repository;
 using CAFU.Routing.Data.DataStore;
 using UniRx;
+using Zenject;
 
 namespace CAFU.Routing.Domain.Repository {
 
@@ -23,6 +24,7 @@ namespace CAFU.Routing.Domain.Repository {
 
         }
 
+        [Inject]
         private ISceneDataStore SceneDataStore { get; set; }
 
         public IObservable<Data.Entity.SceneEntity> LoadSceneAsObservable(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode) {

@@ -4,6 +4,7 @@ using CAFU.Routing.Domain.Repository;
 using CAFU.Routing.Domain.Translator;
 using UniRx;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace CAFU.Routing.Domain.UseCase {
 
@@ -41,8 +42,10 @@ namespace CAFU.Routing.Domain.UseCase {
 
         }
 
+        [Inject]
         private IRoutingRepository RoutingRepository { get; set; }
 
+        [Inject]
         private IRoutingTranslator RoutingTranslator { get; set; }
 
         private Subject<SceneModel> LoadSceneSubject { get; set; }
@@ -101,6 +104,7 @@ namespace CAFU.Routing.Domain.UseCase {
             return this.OnUnloadSceneAsObservable().Where(x => x.Name == sceneName).AsObservable();
         }
 
+        [Inject]
         private void Initialize() {
             this.LoadSceneSubject = new Subject<SceneModel>();
             this.UnloadSceneSubject = new Subject<SceneModel>();
