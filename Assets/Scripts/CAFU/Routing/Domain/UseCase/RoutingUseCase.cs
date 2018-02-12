@@ -4,27 +4,49 @@ using CAFU.Routing.Domain.Repository;
 using CAFU.Routing.Domain.Translator;
 using UniRx;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace CAFU.Routing.Domain.UseCase {
 
-    public class RoutingUseCase : ISingletonUseCase {
+    public interface IRoutingUseCase : ISingletonUseCase {
+
+        void LoadScene(string sceneName, LoadSceneMode loadSceneMode);
+
+        void UnloadScene(string sceneName);
+
+        IObservable<SceneModel> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode);
+
+        IObservable<SceneModel> UnloadSceneAsObservable(string sceneName);
+
+        IObservable<SceneModel> OnLoadSceneAsObservable();
+
+        IObservable<SceneModel> OnLoadSceneAsObservable(string sceneName);
+
+        IObservable<SceneModel> OnUnloadSceneAsObservable();
+
+        IObservable<SceneModel> OnUnloadSceneAsObservable(string sceneName);
+
+    }
+
+    public class RoutingUseCase : IRoutingUseCase {
 
         // FIXME: Use Zenject
         public class Factory : DefaultUseCaseFactory<RoutingUseCase> {
 
             protected override void Initialize(RoutingUseCase instance) {
                 base.Initialize(instance);
-                instance.LoadSceneSubject = new Subject<SceneModel>();
-                instance.UnloadSceneSubject = new Subject<SceneModel>();
                 instance.RoutingRepository = new RoutingRepository.Factory().Create();
                 instance.RoutingTranslator = new RoutingTranslator.Factory().Create();
+                instance.Initialize();
             }
 
         }
 
-        private RoutingRepository RoutingRepository { get; set; }
+        [Inject]
+        private IRoutingRepository RoutingRepository { get; set; }
 
-        private RoutingTranslator RoutingTranslator { get; set; }
+        [Inject]
+        private IRoutingTranslator RoutingTranslator { get; set; }
 
         private Subject<SceneModel> LoadSceneSubject { get; set; }
 
@@ -80,6 +102,12 @@ namespace CAFU.Routing.Domain.UseCase {
 
         public IObservable<SceneModel> OnUnloadSceneAsObservable(string sceneName) {
             return this.OnUnloadSceneAsObservable().Where(x => x.Name == sceneName).AsObservable();
+        }
+
+        [Inject]
+        private void Initialize() {
+            this.LoadSceneSubject = new Subject<SceneModel>();
+            this.UnloadSceneSubject = new Subject<SceneModel>();
         }
 
     }

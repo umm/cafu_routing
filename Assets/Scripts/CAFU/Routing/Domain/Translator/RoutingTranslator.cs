@@ -7,7 +7,11 @@ using UniRx;
 
 namespace CAFU.Routing.Domain.Translator {
 
-    public class RoutingTranslator : IAsyncModelTranslator<SceneEntity, SceneModel> {
+    public interface IRoutingTranslator : IAsyncModelTranslator<SceneEntity, SceneModel> {
+
+    }
+
+    public class RoutingTranslator : IRoutingTranslator {
 
         public class Factory : DefaultTranslatorFactory<RoutingTranslator> {
 
