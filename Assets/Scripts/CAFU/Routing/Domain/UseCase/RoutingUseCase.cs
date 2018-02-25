@@ -1,4 +1,5 @@
-﻿using CAFU.Core.Domain.UseCase;
+﻿using System.Collections.Generic;
+using CAFU.Core.Domain.UseCase;
 using CAFU.Routing.Domain.Model;
 using CAFU.Routing.Domain.Repository;
 using CAFU.Routing.Domain.Translator;
@@ -7,7 +8,29 @@ using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Domain.UseCase {
 
-    public class RoutingUseCase : ISingletonUseCase {
+    public interface IRoutingUseCase : ISingletonUseCase {
+
+        void LoadScene(string sceneName, LoadSceneMode loadSceneMode);
+
+        void UnloadScene(string sceneName);
+
+        IObservable<SceneModel> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode);
+
+        IObservable<SceneModel> UnloadSceneAsObservable(string sceneName);
+
+        IObservable<SceneModel> OnLoadSceneAsObservable();
+
+        IObservable<SceneModel> OnLoadSceneAsObservable(string sceneName);
+
+        IObservable<SceneModel> OnUnloadSceneAsObservable();
+
+        IObservable<SceneModel> OnUnloadSceneAsObservable(string sceneName);
+
+        bool HasLoaded(string sceneName);
+
+    }
+
+    public class RoutingUseCase : IRoutingUseCase {
 
         // FIXME: Use Zenject
         public class Factory : DefaultUseCaseFactory<RoutingUseCase> {
@@ -18,6 +41,7 @@ namespace CAFU.Routing.Domain.UseCase {
                 instance.UnloadSceneSubject = new Subject<SceneModel>();
                 instance.RoutingRepository = new RoutingRepository.Factory().Create();
                 instance.RoutingTranslator = new RoutingTranslator.Factory().Create();
+                instance.Initialize();
             }
 
         }
@@ -29,6 +53,8 @@ namespace CAFU.Routing.Domain.UseCase {
         private Subject<SceneModel> LoadSceneSubject { get; set; }
 
         private Subject<SceneModel> UnloadSceneSubject { get; set; }
+
+        private List<SceneModel> LoadedSceneModelList { get; set; }
 
         public void LoadScene(string sceneName, LoadSceneMode loadSceneMode) {
             this.LoadSceneAsObservable(sceneName, loadSceneMode).Subscribe();
@@ -80,6 +106,16 @@ namespace CAFU.Routing.Domain.UseCase {
 
         public IObservable<SceneModel> OnUnloadSceneAsObservable(string sceneName) {
             return this.OnUnloadSceneAsObservable().Where(x => x.Name == sceneName).AsObservable();
+        }
+
+        public bool HasLoaded(string sceneName) {
+            return this.LoadedSceneModelList.Exists(x => x.Name == sceneName);
+        }
+
+        private void Initialize() {
+            this.LoadedSceneModelList = new List<SceneModel>();
+            this.OnLoadSceneAsObservable().Subscribe(x => this.LoadedSceneModelList.Add(x));
+            this.OnUnloadSceneAsObservable().Subscribe(x => this.LoadedSceneModelList.RemoveAll(y => y.Name == x.Name));
         }
 
     }
