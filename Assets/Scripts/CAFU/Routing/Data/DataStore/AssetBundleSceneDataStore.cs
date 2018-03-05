@@ -15,7 +15,6 @@ namespace CAFU.Routing.Data.DataStore {
 
         public override IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode) {
             // 先に AssetBundle からシーンを読み込む
-            UnityEngine.Debug.Log(ContextManager.CurrentProject.As<IDownloadableProjectContext>());
             return Loader.GetInstance(ContextManager.CurrentProject.As<IDownloadableProjectContext>())
                 .LoadAssetAsObservable<SceneObject>(sceneName)
                 .SelectMany(_ => base.LoadSceneAsObservable(sceneName, loadSceneMode));
