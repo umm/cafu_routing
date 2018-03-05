@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CAFU.Core.Data.DataStore;
-using CAFU.Core.Utility;
 using CAFU.Routing.Data.Entity;
 using UniRx;
 using UnityEngine;
@@ -8,38 +8,26 @@ using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Data.DataStore {
 
-    public interface ISceneDataStore : IDataStore {
+    public interface ISceneDataStore : ISingletonDataStore {
 
-        IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode);
+        UniRx.IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode);
 
-        IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName);
+        UniRx.IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName);
 
     }
 
-    // FIXME: Scenes in Build 版と AssetBundle 版とでクラスを分ける
-    public class SceneDataStore : ISceneDataStore, ISingleton {
+    [Obsolete("Please use `InBuildSceneDataStore` instead of this class.")]
+    public class SceneDataStore : InBuildSceneDataStore {
 
-        public class Factory : DefaultDataStoreFactory<SceneDataStore> {
+    }
 
-        }
+    public abstract class SceneDataStoreBase : ISceneDataStore {
 
-        private Dictionary<string, SceneEntity> sceneEntityCacheMap;
+        private Dictionary<string, SceneEntity> SceneEntityCacheMap { get; } = new Dictionary<string, SceneEntity>();
 
-        private Dictionary<string, SceneEntity> SceneEntityCacheMap {
-            get {
-                if (this.sceneEntityCacheMap == default(Dictionary<string, SceneEntity>)) {
-                    this.sceneEntityCacheMap = new Dictionary<string, SceneEntity>();
-                }
-                return this.sceneEntityCacheMap;
-            }
-            set {
-                this.sceneEntityCacheMap = value;
-            }
-        }
-
-        public IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode) {
+        public virtual UniRx.IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode) {
             if (this.SceneEntityCacheMap.ContainsKey(sceneName)) {
-                return Observable.Throw<SceneEntity>(new System.ArgumentException(string.Format("Scene '{0}' already has loaded.", sceneName)));
+                return Observable.Throw<SceneEntity>(new ArgumentException($"Scene '{sceneName}' already has loaded."));
             }
             return SceneManager.LoadSceneAsync(sceneName, loadSceneMode)
                 .AsObservable()
@@ -55,11 +43,11 @@ namespace CAFU.Routing.Data.DataStore {
                 );
         }
 
-        public IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName) {
+        public virtual UniRx.IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName) {
             if (!this.SceneEntityCacheMap.ContainsKey(sceneName)) {
                 // エディタ実行でない場合には「読み込まれていない」旨を Exception として Throw する
                 if (!Application.isEditor) {
-                    return Observable.Throw<SceneEntity>(new System.ArgumentException(string.Format("Scene '{0}' has not loaded yet.", sceneName)));
+                    return Observable.Throw<SceneEntity>(new ArgumentException($"Scene '{sceneName}' has not loaded yet."));
                 }
                 // エディタ実行の場合のみ、初期シーンの直接読み込みを考慮して値を疑似構築する
                 this.SceneEntityCacheMap[sceneName] = new SceneEntity() {
