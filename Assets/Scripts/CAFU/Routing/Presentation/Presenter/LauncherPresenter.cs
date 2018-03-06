@@ -2,6 +2,7 @@
 using CAFU.Core.Presentation.Presenter;
 using CAFU.Routing.Domain.UseCase;
 using UnityEngine.SceneManagement;
+using UnityModule.ContextManagement;
 
 namespace CAFU.Routing.Presentation.Presenter {
 
@@ -20,6 +21,10 @@ namespace CAFU.Routing.Presentation.Presenter {
         private const string LAUNCHER_SCENE_NAME = "Launcher";
 
         private RoutingUseCase RoutingUseCase { get; set; }
+
+        public void LaunchInitialScene<TSceneName>(TSceneName sceneName) where TSceneName : struct {
+            this.LaunchInitialScene(ContextManager.CurrentProject.CreateSceneName(sceneName));
+        }
 
         public void LaunchInitialScene(string sceneName) {
             if (sceneName == LAUNCHER_SCENE_NAME) {
