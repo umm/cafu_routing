@@ -18,6 +18,7 @@ namespace CAFU.Routing.Domain.Translator {
                 Name = entity.Name,
             };
             if (entity.UnityScene.IsValid()) {
+                sceneModel.RootGameObjects = entity.UnityScene.GetRootGameObjects();
                 sceneModel.Controller = entity.UnityScene
                     .GetRootGameObjects()
                     .ToList()
