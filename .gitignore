@@ -37,6 +37,8 @@
 # ======================= #
 /node_modules/
 /Assets/Modules*
+/package-lock.json
+/yarn.lock
 
 # ============ #
 # OS generated #
@@ -57,4 +59,3 @@ Thumbs.db
 # ====== #
 # Custom #
 # ====== #
-
