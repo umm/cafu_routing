@@ -2,9 +2,6 @@
 using CAFU.Routing.Presentation.Presenter;
 using UnityEngine;
 
-// ReSharper disable ArrangeAccessorOwnerBody
-// ReSharper disable UnusedMember.Global
-
 namespace CAFU.Routing.Presentation.View.Launcher
 {
     public abstract class Controller<TSceneName> : Controller<Controller<TSceneName>, LauncherPresenter, LauncherPresenter.Factory> where TSceneName : struct

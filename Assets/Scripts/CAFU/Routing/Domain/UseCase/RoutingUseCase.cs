@@ -7,9 +7,6 @@ using UniRx;
 using UnityEngine.SceneManagement;
 using UnityModule.ContextManagement;
 
-// ReSharper disable UnusedMemberInSuper.Global
-// ReSharper disable UnusedMember.Global
-
 namespace CAFU.Routing.Domain.UseCase
 {
     public interface IRoutingUseCase : ISingletonUseCase
