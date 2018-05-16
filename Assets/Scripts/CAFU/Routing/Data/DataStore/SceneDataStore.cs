@@ -16,11 +16,6 @@ namespace CAFU.Routing.Data.DataStore {
 
     }
 
-    [Obsolete("Please use `InBuildSceneDataStore` instead of this class.")]
-    public class SceneDataStore : InBuildSceneDataStore {
-
-    }
-
     public abstract class SceneDataStoreBase : ISceneDataStore {
 
         private Dictionary<string, SceneEntity> SceneEntityCacheMap { get; } = new Dictionary<string, SceneEntity>();
