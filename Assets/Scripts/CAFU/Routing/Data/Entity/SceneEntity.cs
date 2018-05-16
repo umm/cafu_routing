@@ -1,8 +1,10 @@
 ﻿using CAFU.Core.Data.Entity;
+using JetBrains.Annotations;
 using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Data.Entity
 {
+    [PublicAPI]
     public class SceneEntity : IEntity
     {
         /// <summary>

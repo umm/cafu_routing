@@ -1,5 +1,6 @@
 ﻿using CAFU.Core.Data.DataStore;
 using CAFU.Routing.Data.Entity;
+using JetBrains.Annotations;
 using UniRx;
 using UnityEngine.SceneManagement;
 using UnityModule.AssetBundleManagement;
@@ -7,6 +8,7 @@ using UnityModule.ContextManagement;
 
 namespace CAFU.Routing.Data.DataStore
 {
+    [PublicAPI]
     public class AssetBundleSceneDataStore : SceneDataStoreBase
     {
         public class Factory : DefaultDataStoreFactory<AssetBundleSceneDataStore>

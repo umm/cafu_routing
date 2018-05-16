@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Data.DataStore
 {
+    [PublicAPI]
     public class SceneDataStoreResolver
     {
         private IEnumerable<string> InBuildScenePathList { get; } = Enumerable.Range(0, SceneManager.sceneCountInBuildSettings).Select(SceneUtility.GetScenePathByBuildIndex);

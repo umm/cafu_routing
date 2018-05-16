@@ -3,10 +3,12 @@ using CAFU.Core.Domain.Translator;
 using CAFU.Core.Presentation.View;
 using CAFU.Routing.Data.Entity;
 using CAFU.Routing.Domain.Model;
+using JetBrains.Annotations;
 using UniRx;
 
 namespace CAFU.Routing.Domain.Translator
 {
+    [PublicAPI]
     public class RoutingTranslator : IAsyncModelTranslator<SceneEntity, SceneModel>
     {
         public class Factory : DefaultTranslatorFactory<RoutingTranslator>

@@ -1,9 +1,11 @@
 ﻿using CAFU.Core.Domain.Repository;
 using CAFU.Routing.Data.DataStore;
+using JetBrains.Annotations;
 using UniRx;
 
 namespace CAFU.Routing.Domain.Repository
 {
+    [PublicAPI]
     public class RoutingRepository : IRepository
     {
         public class Factory : DefaultRepositoryFactory<RoutingRepository>

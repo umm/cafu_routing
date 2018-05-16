@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using CAFU.Core.Data.DataStore;
 using CAFU.Routing.Data.Entity;
+using JetBrains.Annotations;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CAFU.Routing.Data.DataStore
 {
+    [PublicAPI]
     public interface ISceneDataStore : ISingletonDataStore
     {
         UniRx.IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode);
@@ -15,6 +17,7 @@ namespace CAFU.Routing.Data.DataStore
         UniRx.IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName);
     }
 
+    [PublicAPI]
     public abstract class SceneDataStoreBase : ISceneDataStore
     {
         private Dictionary<string, SceneEntity> SceneEntityCacheMap { get; } = new Dictionary<string, SceneEntity>();

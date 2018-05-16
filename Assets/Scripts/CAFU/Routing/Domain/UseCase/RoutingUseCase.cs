@@ -3,12 +3,14 @@ using CAFU.Core.Domain.UseCase;
 using CAFU.Routing.Domain.Model;
 using CAFU.Routing.Domain.Repository;
 using CAFU.Routing.Domain.Translator;
+using JetBrains.Annotations;
 using UniRx;
 using UnityEngine.SceneManagement;
 using UnityModule.ContextManagement;
 
 namespace CAFU.Routing.Domain.UseCase
 {
+    [PublicAPI]
     public interface IRoutingUseCase : ISingletonUseCase
     {
         void LoadScene<TSceneName>(TSceneName sceneName, LoadSceneMode loadSceneMode) where TSceneName : struct;
@@ -44,6 +46,7 @@ namespace CAFU.Routing.Domain.UseCase
         bool HasLoaded(string sceneName);
     }
 
+    [PublicAPI]
     public class RoutingUseCase : IRoutingUseCase
     {
         public class Factory : DefaultUseCaseFactory<RoutingUseCase>

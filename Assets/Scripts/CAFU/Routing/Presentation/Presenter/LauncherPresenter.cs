@@ -1,11 +1,13 @@
 ﻿using System;
 using CAFU.Core.Presentation.Presenter;
 using CAFU.Routing.Domain.UseCase;
+using JetBrains.Annotations;
 using UnityEngine.SceneManagement;
 using UnityModule.ContextManagement;
 
 namespace CAFU.Routing.Presentation.Presenter
 {
+    [PublicAPI]
     public class LauncherPresenter : IPresenter
     {
         // FIXME: Use Zenject
