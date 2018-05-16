@@ -1,27 +1,20 @@
 ﻿using CAFU.Core.Presentation.View;
 using CAFU.Routing.Presentation.Presenter;
+using JetBrains.Annotations;
 using UnityEngine;
 
-// ReSharper disable ArrangeAccessorOwnerBody
-// ReSharper disable UnusedMember.Global
+namespace CAFU.Routing.Presentation.View.Launcher
+{
+    [PublicAPI]
+    public abstract class Controller<TSceneName> : Controller<Controller<TSceneName>, LauncherPresenter, LauncherPresenter.Factory> where TSceneName : struct
+    {
+        [SerializeField] private TSceneName initialScene;
 
-namespace CAFU.Routing.Presentation.View.Launcher {
+        private TSceneName InitialScene => initialScene;
 
-    public abstract class Controller<TSceneName> : Controller<Controller<TSceneName>, LauncherPresenter, LauncherPresenter.Factory> where TSceneName : struct {
-
-        [SerializeField]
-        private TSceneName initialScene;
-
-        private TSceneName InitialScene {
-            get {
-                return this.initialScene;
-            }
+        protected override void Start()
+        {
+            this.GetPresenter<LauncherPresenter>().LaunchInitialScene(InitialScene);
         }
-
-        protected override void Start() {
-            this.GetPresenter<LauncherPresenter>().LaunchInitialScene(this.InitialScene);
-        }
-
     }
-
 }
