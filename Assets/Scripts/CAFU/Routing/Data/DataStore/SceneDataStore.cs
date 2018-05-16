@@ -31,7 +31,7 @@ namespace CAFU.Routing.Data.DataStore
                 .Select(
                     (_) =>
                     {
-                        SceneEntity sceneEntity = new SceneEntity()
+                        var sceneEntity = new SceneEntity()
                         {
                             Name = sceneName,
                             UnityScene = SceneManager.GetSceneByName(sceneName)
@@ -65,7 +65,7 @@ namespace CAFU.Routing.Data.DataStore
                 .Select(
                     (_) =>
                     {
-                        SceneEntity sceneEntity = SceneEntityCacheMap[sceneName];
+                        var sceneEntity = SceneEntityCacheMap[sceneName];
                         SceneEntityCacheMap.Remove(sceneName);
                         return sceneEntity;
                     }

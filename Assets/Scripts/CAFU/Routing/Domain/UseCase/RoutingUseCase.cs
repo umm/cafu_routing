@@ -99,7 +99,7 @@ namespace CAFU.Routing.Domain.UseCase
 
         public IObservable<SceneModel> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode)
         {
-            IObservable<SceneModel> stream = RoutingRepository
+            var stream = RoutingRepository
                 .LoadSceneAsObservable(sceneName, loadSceneMode)
                 .SelectMany(x => RoutingTranslator.TranslateAsObservable(x))
                 .Share();
@@ -119,7 +119,7 @@ namespace CAFU.Routing.Domain.UseCase
 
         public IObservable<SceneModel> UnloadSceneAsObservable(string sceneName)
         {
-            IObservable<SceneModel> stream = RoutingRepository
+            var stream = RoutingRepository
                 .UnloadSceneAsObservable(sceneName)
                 .SelectMany(x => RoutingTranslator.TranslateAsObservable(x))
                 .Share();
