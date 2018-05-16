@@ -1,10 +1,10 @@
 ﻿using CAFU.Core.Data.Entity;
 using UnityEngine.SceneManagement;
 
-namespace CAFU.Routing.Data.Entity {
-
-    public class SceneEntity : IEntity {
-
+namespace CAFU.Routing.Data.Entity
+{
+    public class SceneEntity : IEntity
+    {
         /// <summary>
         /// シーン名
         /// </summary>
@@ -12,7 +12,5 @@ namespace CAFU.Routing.Data.Entity {
         public string Name { get; set; }
 
         public Scene UnityScene { get; set; }
-
     }
-
 }

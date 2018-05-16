@@ -10,10 +10,10 @@ using UnityModule.ContextManagement;
 // ReSharper disable UnusedMemberInSuper.Global
 // ReSharper disable UnusedMember.Global
 
-namespace CAFU.Routing.Domain.UseCase {
-
-    public interface IRoutingUseCase : ISingletonUseCase {
-
+namespace CAFU.Routing.Domain.UseCase
+{
+    public interface IRoutingUseCase : ISingletonUseCase
+    {
         void LoadScene<TSceneName>(TSceneName sceneName, LoadSceneMode loadSceneMode) where TSceneName : struct;
 
         void LoadScene(string sceneName, LoadSceneMode loadSceneMode);
@@ -45,14 +45,14 @@ namespace CAFU.Routing.Domain.UseCase {
         bool HasLoaded<TSceneName>(TSceneName sceneName) where TSceneName : struct;
 
         bool HasLoaded(string sceneName);
-
     }
 
-    public class RoutingUseCase : IRoutingUseCase {
-
-        public class Factory : DefaultUseCaseFactory<RoutingUseCase> {
-
-            protected override void Initialize(RoutingUseCase instance) {
+    public class RoutingUseCase : IRoutingUseCase
+    {
+        public class Factory : DefaultUseCaseFactory<RoutingUseCase>
+        {
+            protected override void Initialize(RoutingUseCase instance)
+            {
                 base.Initialize(instance);
                 instance.LoadSceneSubject = new Subject<SceneModel>();
                 instance.UnloadSceneSubject = new Subject<SceneModel>();
@@ -60,7 +60,6 @@ namespace CAFU.Routing.Domain.UseCase {
                 instance.RoutingTranslator = new RoutingTranslator.Factory().Create();
                 instance.Initialize();
             }
-
         }
 
         private RoutingRepository RoutingRepository { get; set; }
@@ -73,27 +72,33 @@ namespace CAFU.Routing.Domain.UseCase {
 
         private List<SceneModel> LoadedSceneModelList { get; set; }
 
-        public void LoadScene<TSceneName>(TSceneName sceneName, LoadSceneMode loadSceneMode) where TSceneName : struct {
+        public void LoadScene<TSceneName>(TSceneName sceneName, LoadSceneMode loadSceneMode) where TSceneName : struct
+        {
             this.LoadScene(ContextManager.CurrentProject.CreateSceneName(sceneName), loadSceneMode);
         }
 
-        public void LoadScene(string sceneName, LoadSceneMode loadSceneMode) {
+        public void LoadScene(string sceneName, LoadSceneMode loadSceneMode)
+        {
             this.LoadSceneAsObservable(sceneName, loadSceneMode).Subscribe();
         }
 
-        public void UnloadScene<TSceneName>(TSceneName sceneName) where TSceneName : struct {
+        public void UnloadScene<TSceneName>(TSceneName sceneName) where TSceneName : struct
+        {
             this.UnloadScene(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
-        public void UnloadScene(string sceneName) {
+        public void UnloadScene(string sceneName)
+        {
             this.UnloadSceneAsObservable(sceneName).Subscribe();
         }
 
-        public IObservable<SceneModel> LoadSceneAsObservable<TSceneName>(TSceneName sceneName, LoadSceneMode loadSceneMode) where TSceneName : struct {
+        public IObservable<SceneModel> LoadSceneAsObservable<TSceneName>(TSceneName sceneName, LoadSceneMode loadSceneMode) where TSceneName : struct
+        {
             return this.LoadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName), loadSceneMode);
         }
 
-        public IObservable<SceneModel> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode) {
+        public IObservable<SceneModel> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode)
+        {
             IObservable<SceneModel> stream = this.RoutingRepository
                 .LoadSceneAsObservable(sceneName, loadSceneMode)
                 .SelectMany(x => this.RoutingTranslator.TranslateAsObservable(x))
@@ -107,11 +112,13 @@ namespace CAFU.Routing.Domain.UseCase {
             return stream;
         }
 
-        public IObservable<SceneModel> UnloadSceneAsObservable<TSceneName>(TSceneName sceneName) where TSceneName : struct {
+        public IObservable<SceneModel> UnloadSceneAsObservable<TSceneName>(TSceneName sceneName) where TSceneName : struct
+        {
             return this.UnloadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
-        public IObservable<SceneModel> UnloadSceneAsObservable(string sceneName) {
+        public IObservable<SceneModel> UnloadSceneAsObservable(string sceneName)
+        {
             IObservable<SceneModel> stream = this.RoutingRepository
                 .UnloadSceneAsObservable(sceneName)
                 .SelectMany(x => this.RoutingTranslator.TranslateAsObservable(x))
@@ -125,44 +132,51 @@ namespace CAFU.Routing.Domain.UseCase {
             return stream;
         }
 
-        public IObservable<SceneModel> OnLoadSceneAsObservable() {
+        public IObservable<SceneModel> OnLoadSceneAsObservable()
+        {
             return this.LoadSceneSubject.AsObservable();
         }
 
-        public IObservable<SceneModel> OnLoadSceneAsObservable<TSceneName>(TSceneName sceneName) where TSceneName : struct {
+        public IObservable<SceneModel> OnLoadSceneAsObservable<TSceneName>(TSceneName sceneName) where TSceneName : struct
+        {
             return this.OnLoadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
-        public IObservable<SceneModel> OnLoadSceneAsObservable(string sceneName) {
+        public IObservable<SceneModel> OnLoadSceneAsObservable(string sceneName)
+        {
             return this.OnLoadSceneAsObservable().Where(x => x.Name == sceneName).AsObservable();
         }
 
-        public IObservable<SceneModel> OnUnloadSceneAsObservable() {
+        public IObservable<SceneModel> OnUnloadSceneAsObservable()
+        {
             return this.UnloadSceneSubject.AsObservable();
         }
 
-        public IObservable<SceneModel> OnUnloadSceneAsObservable<TSceneName>(TSceneName sceneName) where TSceneName : struct {
+        public IObservable<SceneModel> OnUnloadSceneAsObservable<TSceneName>(TSceneName sceneName) where TSceneName : struct
+        {
             return this.OnUnloadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
-        public IObservable<SceneModel> OnUnloadSceneAsObservable(string sceneName) {
+        public IObservable<SceneModel> OnUnloadSceneAsObservable(string sceneName)
+        {
             return this.OnUnloadSceneAsObservable().Where(x => x.Name == sceneName).AsObservable();
         }
 
-        public bool HasLoaded<TSceneName>(TSceneName sceneName) where TSceneName : struct {
+        public bool HasLoaded<TSceneName>(TSceneName sceneName) where TSceneName : struct
+        {
             return this.HasLoaded(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
-        public bool HasLoaded(string sceneName) {
+        public bool HasLoaded(string sceneName)
+        {
             return this.LoadedSceneModelList.Exists(x => x.Name == sceneName);
         }
 
-        private void Initialize() {
+        private void Initialize()
+        {
             this.LoadedSceneModelList = new List<SceneModel>();
             this.OnLoadSceneAsObservable().Subscribe(x => this.LoadedSceneModelList.Add(x));
             this.OnUnloadSceneAsObservable().Subscribe(x => this.LoadedSceneModelList.RemoveAll(y => y.Name == x.Name));
         }
-
     }
-
 }

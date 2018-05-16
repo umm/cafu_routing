@@ -5,19 +5,22 @@ using CAFU.Routing.Data.Entity;
 using CAFU.Routing.Domain.Model;
 using UniRx;
 
-namespace CAFU.Routing.Domain.Translator {
-
-    public class RoutingTranslator : IAsyncModelTranslator<SceneEntity, SceneModel> {
-
-        public class Factory : DefaultTranslatorFactory<RoutingTranslator> {
-
+namespace CAFU.Routing.Domain.Translator
+{
+    public class RoutingTranslator : IAsyncModelTranslator<SceneEntity, SceneModel>
+    {
+        public class Factory : DefaultTranslatorFactory<RoutingTranslator>
+        {
         }
 
-        public IObservable<SceneModel> TranslateAsObservable(SceneEntity entity) {
-            SceneModel sceneModel = new SceneModel {
+        public IObservable<SceneModel> TranslateAsObservable(SceneEntity entity)
+        {
+            SceneModel sceneModel = new SceneModel
+            {
                 Name = entity.Name,
             };
-            if (entity.UnityScene.IsValid()) {
+            if (entity.UnityScene.IsValid())
+            {
                 sceneModel.RootGameObjects = entity.UnityScene.GetRootGameObjects();
                 sceneModel.Controller = entity.UnityScene
                     .GetRootGameObjects()
@@ -25,9 +28,8 @@ namespace CAFU.Routing.Domain.Translator {
                     .Find(x => x.GetComponent<IController>() != default(IController))
                     .GetComponent<IController>();
             }
+
             return Observable.Return(sceneModel);
         }
-
     }
-
 }
