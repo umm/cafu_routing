@@ -1,10 +1,12 @@
 ﻿using CAFU.Core.Data.Entity;
+using JetBrains.Annotations;
 using UnityEngine.SceneManagement;
 
-namespace CAFU.Routing.Data.Entity {
-
-    public class SceneEntity : IEntity {
-
+namespace CAFU.Routing.Data.Entity
+{
+    [PublicAPI]
+    public class SceneEntity : IEntity
+    {
         /// <summary>
         /// シーン名
         /// </summary>
@@ -12,7 +14,5 @@ namespace CAFU.Routing.Data.Entity {
         public string Name { get; set; }
 
         public Scene UnityScene { get; set; }
-
     }
-
 }
