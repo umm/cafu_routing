@@ -10,10 +10,7 @@ namespace CAFU.Routing.Presentation.View.Launcher
     {
         [SerializeField] private TSceneName initialScene;
 
-        private TSceneName InitialScene
-        {
-            get { return initialScene; }
-        }
+        private TSceneName InitialScene => initialScene;
 
         protected override void Start()
         {
