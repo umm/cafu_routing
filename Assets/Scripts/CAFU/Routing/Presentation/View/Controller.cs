@@ -19,7 +19,7 @@ namespace CAFU.Routing.Presentation.View.Launcher {
         }
 
         protected override void Start() {
-            this.GetPresenter().LaunchInitialScene(this.InitialScene);
+            this.GetPresenter<LauncherPresenter>().LaunchInitialScene(this.InitialScene);
         }
 
     }
