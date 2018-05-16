@@ -19,12 +19,12 @@ namespace CAFU.Routing.Domain.Repository
 
         public IObservable<Data.Entity.SceneEntity> LoadSceneAsObservable(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode)
         {
-            return this.SceneDataStoreResolver.ResolveSceneDataStore(sceneName).LoadSceneAsObservable(sceneName, loadSceneMode);
+            return SceneDataStoreResolver.ResolveSceneDataStore(sceneName).LoadSceneAsObservable(sceneName, loadSceneMode);
         }
 
         public IObservable<Data.Entity.SceneEntity> UnloadSceneAsObservable(string sceneName)
         {
-            return this.SceneDataStoreResolver.ResolveSceneDataStore(sceneName).UnloadSceneAsObservable(sceneName);
+            return SceneDataStoreResolver.ResolveSceneDataStore(sceneName).UnloadSceneAsObservable(sceneName);
         }
     }
 }

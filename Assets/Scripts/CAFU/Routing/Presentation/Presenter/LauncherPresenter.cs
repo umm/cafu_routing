@@ -24,7 +24,7 @@ namespace CAFU.Routing.Presentation.Presenter
 
         public void LaunchInitialScene<TSceneName>(TSceneName sceneName) where TSceneName : struct
         {
-            this.LaunchInitialScene(ContextManager.CurrentProject.CreateSceneName(sceneName));
+            LaunchInitialScene(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
         public void LaunchInitialScene(string sceneName)
@@ -34,7 +34,7 @@ namespace CAFU.Routing.Presentation.Presenter
                 throw new ArgumentException(string.Format("Scene '{0}' cannot set as initial scene.", LAUNCHER_SCENE_NAME));
             }
 
-            this.RoutingUseCase.LoadScene(sceneName, LoadSceneMode.Single);
+            RoutingUseCase.LoadScene(sceneName, LoadSceneMode.Single);
         }
     }
 }

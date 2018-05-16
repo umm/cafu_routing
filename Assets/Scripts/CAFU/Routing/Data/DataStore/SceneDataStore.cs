@@ -21,7 +21,7 @@ namespace CAFU.Routing.Data.DataStore
 
         public virtual UniRx.IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode)
         {
-            if (this.SceneEntityCacheMap.ContainsKey(sceneName))
+            if (SceneEntityCacheMap.ContainsKey(sceneName))
             {
                 return Observable.Throw<SceneEntity>(new ArgumentException($"Scene '{sceneName}' already has loaded."));
             }
@@ -36,7 +36,7 @@ namespace CAFU.Routing.Data.DataStore
                             Name = sceneName,
                             UnityScene = SceneManager.GetSceneByName(sceneName)
                         };
-                        this.SceneEntityCacheMap[sceneName] = sceneEntity;
+                        SceneEntityCacheMap[sceneName] = sceneEntity;
                         return sceneEntity;
                     }
                 );
@@ -44,7 +44,7 @@ namespace CAFU.Routing.Data.DataStore
 
         public virtual UniRx.IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName)
         {
-            if (!this.SceneEntityCacheMap.ContainsKey(sceneName))
+            if (!SceneEntityCacheMap.ContainsKey(sceneName))
             {
                 // エディタ実行でない場合には「読み込まれていない」旨を Exception として Throw する
                 if (!Application.isEditor)
@@ -53,7 +53,7 @@ namespace CAFU.Routing.Data.DataStore
                 }
 
                 // エディタ実行の場合のみ、初期シーンの直接読み込みを考慮して値を疑似構築する
-                this.SceneEntityCacheMap[sceneName] = new SceneEntity()
+                SceneEntityCacheMap[sceneName] = new SceneEntity()
                 {
                     Name = sceneName,
                     UnityScene = SceneManager.GetSceneByName(sceneName),
@@ -65,8 +65,8 @@ namespace CAFU.Routing.Data.DataStore
                 .Select(
                     (_) =>
                     {
-                        SceneEntity sceneEntity = this.SceneEntityCacheMap[sceneName];
-                        this.SceneEntityCacheMap.Remove(sceneName);
+                        SceneEntity sceneEntity = SceneEntityCacheMap[sceneName];
+                        SceneEntityCacheMap.Remove(sceneName);
                         return sceneEntity;
                     }
                 );

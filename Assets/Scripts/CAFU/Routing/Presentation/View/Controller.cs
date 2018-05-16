@@ -13,12 +13,12 @@ namespace CAFU.Routing.Presentation.View.Launcher
 
         private TSceneName InitialScene
         {
-            get { return this.initialScene; }
+            get { return initialScene; }
         }
 
         protected override void Start()
         {
-            this.GetPresenter<LauncherPresenter>().LaunchInitialScene(this.InitialScene);
+            this.GetPresenter<LauncherPresenter>().LaunchInitialScene(InitialScene);
         }
     }
 }

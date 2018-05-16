@@ -74,109 +74,109 @@ namespace CAFU.Routing.Domain.UseCase
 
         public void LoadScene<TSceneName>(TSceneName sceneName, LoadSceneMode loadSceneMode) where TSceneName : struct
         {
-            this.LoadScene(ContextManager.CurrentProject.CreateSceneName(sceneName), loadSceneMode);
+            LoadScene(ContextManager.CurrentProject.CreateSceneName(sceneName), loadSceneMode);
         }
 
         public void LoadScene(string sceneName, LoadSceneMode loadSceneMode)
         {
-            this.LoadSceneAsObservable(sceneName, loadSceneMode).Subscribe();
+            LoadSceneAsObservable(sceneName, loadSceneMode).Subscribe();
         }
 
         public void UnloadScene<TSceneName>(TSceneName sceneName) where TSceneName : struct
         {
-            this.UnloadScene(ContextManager.CurrentProject.CreateSceneName(sceneName));
+            UnloadScene(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
         public void UnloadScene(string sceneName)
         {
-            this.UnloadSceneAsObservable(sceneName).Subscribe();
+            UnloadSceneAsObservable(sceneName).Subscribe();
         }
 
         public IObservable<SceneModel> LoadSceneAsObservable<TSceneName>(TSceneName sceneName, LoadSceneMode loadSceneMode) where TSceneName : struct
         {
-            return this.LoadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName), loadSceneMode);
+            return LoadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName), loadSceneMode);
         }
 
         public IObservable<SceneModel> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode)
         {
-            IObservable<SceneModel> stream = this.RoutingRepository
+            IObservable<SceneModel> stream = RoutingRepository
                 .LoadSceneAsObservable(sceneName, loadSceneMode)
-                .SelectMany(x => this.RoutingTranslator.TranslateAsObservable(x))
+                .SelectMany(x => RoutingTranslator.TranslateAsObservable(x))
                 .Share();
             // OnComplete を流してしまうと、Subject が閉じてしまうので OnNext, OnError のみを流す
             stream
                 .Subscribe(
-                    this.LoadSceneSubject.OnNext,
-                    this.LoadSceneSubject.OnError
+                    LoadSceneSubject.OnNext,
+                    LoadSceneSubject.OnError
                 );
             return stream;
         }
 
         public IObservable<SceneModel> UnloadSceneAsObservable<TSceneName>(TSceneName sceneName) where TSceneName : struct
         {
-            return this.UnloadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName));
+            return UnloadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
         public IObservable<SceneModel> UnloadSceneAsObservable(string sceneName)
         {
-            IObservable<SceneModel> stream = this.RoutingRepository
+            IObservable<SceneModel> stream = RoutingRepository
                 .UnloadSceneAsObservable(sceneName)
-                .SelectMany(x => this.RoutingTranslator.TranslateAsObservable(x))
+                .SelectMany(x => RoutingTranslator.TranslateAsObservable(x))
                 .Share();
             // OnComplete を流してしまうと、Subject が閉じてしまうので OnNext, OnError のみを流す
             stream
                 .Subscribe(
-                    this.UnloadSceneSubject.OnNext,
-                    this.UnloadSceneSubject.OnError
+                    UnloadSceneSubject.OnNext,
+                    UnloadSceneSubject.OnError
                 );
             return stream;
         }
 
         public IObservable<SceneModel> OnLoadSceneAsObservable()
         {
-            return this.LoadSceneSubject.AsObservable();
+            return LoadSceneSubject.AsObservable();
         }
 
         public IObservable<SceneModel> OnLoadSceneAsObservable<TSceneName>(TSceneName sceneName) where TSceneName : struct
         {
-            return this.OnLoadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName));
+            return OnLoadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
         public IObservable<SceneModel> OnLoadSceneAsObservable(string sceneName)
         {
-            return this.OnLoadSceneAsObservable().Where(x => x.Name == sceneName).AsObservable();
+            return OnLoadSceneAsObservable().Where(x => x.Name == sceneName).AsObservable();
         }
 
         public IObservable<SceneModel> OnUnloadSceneAsObservable()
         {
-            return this.UnloadSceneSubject.AsObservable();
+            return UnloadSceneSubject.AsObservable();
         }
 
         public IObservable<SceneModel> OnUnloadSceneAsObservable<TSceneName>(TSceneName sceneName) where TSceneName : struct
         {
-            return this.OnUnloadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName));
+            return OnUnloadSceneAsObservable(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
         public IObservable<SceneModel> OnUnloadSceneAsObservable(string sceneName)
         {
-            return this.OnUnloadSceneAsObservable().Where(x => x.Name == sceneName).AsObservable();
+            return OnUnloadSceneAsObservable().Where(x => x.Name == sceneName).AsObservable();
         }
 
         public bool HasLoaded<TSceneName>(TSceneName sceneName) where TSceneName : struct
         {
-            return this.HasLoaded(ContextManager.CurrentProject.CreateSceneName(sceneName));
+            return HasLoaded(ContextManager.CurrentProject.CreateSceneName(sceneName));
         }
 
         public bool HasLoaded(string sceneName)
         {
-            return this.LoadedSceneModelList.Exists(x => x.Name == sceneName);
+            return LoadedSceneModelList.Exists(x => x.Name == sceneName);
         }
 
         private void Initialize()
         {
-            this.LoadedSceneModelList = new List<SceneModel>();
-            this.OnLoadSceneAsObservable().Subscribe(x => this.LoadedSceneModelList.Add(x));
-            this.OnUnloadSceneAsObservable().Subscribe(x => this.LoadedSceneModelList.RemoveAll(y => y.Name == x.Name));
+            LoadedSceneModelList = new List<SceneModel>();
+            OnLoadSceneAsObservable().Subscribe(x => LoadedSceneModelList.Add(x));
+            OnUnloadSceneAsObservable().Subscribe(x => LoadedSceneModelList.RemoveAll(y => y.Name == x.Name));
         }
     }
 }

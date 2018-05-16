@@ -17,7 +17,7 @@ namespace CAFU.Routing.Data.DataStore
         {
             // Scene 構造体を事前に保持しておく手段がないため、無理矢理正規表現でチェックする
             //   LoadScene されていないと Scene 構造体が作られない仕様らしい
-            return InBuildScenePathList.Any(scenePath => Regex.IsMatch(scenePath, $"{sceneName}\\.unity$")) ? this.InBuildSceneDataStore : this.AssetBundleSceneDataStore;
+            return InBuildScenePathList.Any(scenePath => Regex.IsMatch(scenePath, $"{sceneName}\\.unity$")) ? InBuildSceneDataStore : AssetBundleSceneDataStore;
         }
     }
 }
