@@ -20,7 +20,7 @@ namespace CAFU.Routing.Presentation.Presenter
             }
         }
 
-        private const string LAUNCHER_SCENE_NAME = "Launcher";
+        private const string LauncherSceneName = "Launcher";
 
         private RoutingUseCase RoutingUseCase { get; set; }
 
@@ -31,9 +31,9 @@ namespace CAFU.Routing.Presentation.Presenter
 
         public void LaunchInitialScene(string sceneName)
         {
-            if (sceneName == LAUNCHER_SCENE_NAME)
+            if (sceneName == LauncherSceneName)
             {
-                throw new ArgumentException(string.Format("Scene '{0}' cannot set as initial scene.", LAUNCHER_SCENE_NAME));
+                throw new ArgumentException(string.Format("Scene '{0}' cannot set as initial scene.", LauncherSceneName));
             }
 
             RoutingUseCase.LoadScene(sceneName, LoadSceneMode.Single);
