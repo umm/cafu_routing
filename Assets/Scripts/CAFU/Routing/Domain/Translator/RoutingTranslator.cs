@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CAFU.Core.Domain.Translator;
 using CAFU.Core.Presentation.View;
 using CAFU.Routing.Data.Entity;
@@ -15,7 +16,7 @@ namespace CAFU.Routing.Domain.Translator
         {
         }
 
-        public IObservable<SceneModel> TranslateAsObservable(SceneEntity entity)
+        public UniRx.IObservable<SceneModel> TranslateAsObservable(SceneEntity entity)
         {
             var sceneModel = new SceneModel
             {
@@ -26,12 +27,13 @@ namespace CAFU.Routing.Domain.Translator
                 sceneModel.RootGameObjects = entity.UnityScene.GetRootGameObjects();
                 sceneModel.Controller = entity.UnityScene
                     .GetRootGameObjects()
-                    .ToList()
-                    .Find(x => x.GetComponent<IController>() != default(IController))
+                    .FirstOrDefault(x => x.GetComponent<IController>() != default(IController))?
                     .GetComponent<IController>();
             }
 
-            return Observable.Return(sceneModel);
+            return sceneModel.Controller == default(IController)
+                ? Observable.Throw<SceneModel>(new NullReferenceException($"The component what implements `CAFU.Core.Presentation.View.IController` does not found in destination scene. Please check `{entity.Name}` scenes to see if `Controller` component is attached."))
+                : Observable.Return(sceneModel);
         }
     }
 }
