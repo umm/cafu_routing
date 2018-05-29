@@ -10,7 +10,7 @@ using UniRx;
 namespace CAFU.Routing.Domain.Translator
 {
     [PublicAPI]
-    public class RoutingTranslator : IAsyncModelTranslator<SceneEntity, SceneModel>
+    public class RoutingTranslator : IObservableModelTranslator<SceneEntity, SceneModel>
     {
         public class Factory : DefaultTranslatorFactory<RoutingTranslator>
         {
