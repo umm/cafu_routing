@@ -12,9 +12,9 @@ namespace CAFU.Routing.Data.DataStore
     [PublicAPI]
     public interface ISceneDataStore : ISingletonDataStore
     {
-        UniRx.IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode);
+        IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode);
 
-        UniRx.IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName);
+        IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName);
     }
 
     [PublicAPI]
@@ -22,7 +22,7 @@ namespace CAFU.Routing.Data.DataStore
     {
         private Dictionary<string, SceneEntity> SceneEntityCacheMap { get; } = new Dictionary<string, SceneEntity>();
 
-        public virtual UniRx.IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode)
+        public virtual IObservable<SceneEntity> LoadSceneAsObservable(string sceneName, LoadSceneMode loadSceneMode)
         {
             if (SceneEntityCacheMap.ContainsKey(sceneName))
             {
@@ -45,7 +45,7 @@ namespace CAFU.Routing.Data.DataStore
                 );
         }
 
-        public virtual UniRx.IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName)
+        public virtual IObservable<SceneEntity> UnloadSceneAsObservable(string sceneName)
         {
             if (!SceneEntityCacheMap.ContainsKey(sceneName))
             {

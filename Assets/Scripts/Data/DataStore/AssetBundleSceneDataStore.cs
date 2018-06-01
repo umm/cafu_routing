@@ -1,4 +1,5 @@
-﻿using CAFU.Core.Data.DataStore;
+﻿using System;
+using CAFU.Core.Data.DataStore;
 using CAFU.Routing.Data.Entity;
 using JetBrains.Annotations;
 using UniRx;
