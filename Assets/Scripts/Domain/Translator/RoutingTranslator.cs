@@ -16,7 +16,7 @@ namespace CAFU.Routing.Domain.Translator
         {
         }
 
-        public UniRx.IObservable<SceneModel> TranslateAsObservable(SceneEntity entity)
+        public IObservable<SceneModel> TranslateAsObservable(SceneEntity entity)
         {
             var sceneModel = new SceneModel
             {
