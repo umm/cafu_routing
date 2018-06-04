@@ -1,0 +1,15 @@
+{
+    "name": "umm@cafu_routing",
+    "references": [
+        "umm@assetbundle_management",
+        "umm@cafu_core",
+        "umm@context_management",
+        "umm@scene_attribute",
+        "umm@unirx",
+        "umm@unirx_observablelifecyclemonobehaviour"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

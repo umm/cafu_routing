@@ -8,6 +8,7 @@
   },
   "scripts": {
     "umm:init": "umm-init",
+    "umm:generate_assembly_definition": "umm-generate_assembly_definition",
     "umm:module:install": "umm-module-install",
     "umm:module:uninstall": "umm-module-uninstall",
     "postinstall": "npm run --silent umm:module:install",
@@ -26,8 +27,11 @@
   "dependencies": {
     "@umm/assetbundle_management": "umm-projects/assetbundle_management#^1.0.0",
     "@umm/cafu_core": "umm-projects/cafu_core#^2.0.0",
+    "@umm/context_management": "umm-projects/context_management#^1.0.0",
     "@umm/scene_attribute": "umm-projects/scene_attribute#^1.0.0",
-    "@umm/scripts": "umm-projects/scripts#^1.0.0"
+    "@umm/scripts": "umm-projects/scripts#^1.0.0",
+    "@umm/unirx": "umm-projects/unirx#^2.0.0",
+    "@umm/unirx_observablelifecyclemonobehaviour": "umm-projects/unirx_observablelifecyclemonobehaviour#^1.0.0"
   },
   "devDependencies": {}
 }
