@@ -114,7 +114,10 @@ namespace CAFU.Routing.Domain.UseCase
                         {
                             LoadSceneSubject.OnError(new NullReferenceException($"The component what implements `CAFU.Core.Presentation.View.IController` does not found in destination scene. Please check `{x.Name}` scenes to see if `Controller` component is attached."));
                         }
-                        LoadSceneSubject.OnNext(x);
+                        else
+                        {
+                            LoadSceneSubject.OnNext(x);
+                        }
                     },
                     LoadSceneSubject.OnError
                 );
