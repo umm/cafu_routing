@@ -22,14 +22,17 @@ namespace CAFU.Routing.Domain.Translator
             {
                 Name = entity.Name,
             };
-            if (entity.UnityScene.IsValid())
+
+            if (!entity.UnityScene.IsValid())
             {
-                sceneModel.RootGameObjects = entity.UnityScene.GetRootGameObjects();
-                sceneModel.Controller = entity.UnityScene
-                    .GetRootGameObjects()
-                    .FirstOrDefault(x => x.GetComponent<IController>() != default(IController))?
-                    .GetComponent<IController>();
+                return Observable.Return(sceneModel);
             }
+
+            sceneModel.RootGameObjects = entity.UnityScene.GetRootGameObjects();
+            sceneModel.Controller = entity.UnityScene
+                .GetRootGameObjects()
+                .FirstOrDefault(x => x.GetComponent<IController>() != default(IController))?
+                .GetComponent<IController>();
 
             return sceneModel.Controller == default(IController)
                 ? Observable.Throw<SceneModel>(new NullReferenceException($"The component what implements `CAFU.Core.Presentation.View.IController` does not found in destination scene. Please check `{entity.Name}` scenes to see if `Controller` component is attached."))
