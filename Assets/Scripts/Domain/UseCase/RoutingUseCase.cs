@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CAFU.Core.Domain.UseCase;
+using CAFU.Core.Presentation.View;
 using CAFU.Routing.Domain.Model;
 using CAFU.Routing.Domain.Repository;
 using CAFU.Routing.Domain.Translator;
@@ -107,7 +108,17 @@ namespace CAFU.Routing.Domain.UseCase
             // OnComplete を流してしまうと、Subject が閉じてしまうので OnNext, OnError のみを流す
             stream
                 .Subscribe(
-                    LoadSceneSubject.OnNext,
+                    (x) =>
+                    {
+                        if (x.Controller == default(IController))
+                        {
+                            LoadSceneSubject.OnError(new NullReferenceException($"The component what implements `CAFU.Core.Presentation.View.IController` does not found in destination scene. Please check `{x.Name}` scenes to see if `Controller` component is attached."));
+                        }
+                        else
+                        {
+                            LoadSceneSubject.OnNext(x);
+                        }
+                    },
                     LoadSceneSubject.OnError
                 );
             return stream;
