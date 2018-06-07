@@ -31,9 +31,7 @@ namespace CAFU.Routing.Domain.Translator
                     .GetComponent<IController>();
             }
 
-            return sceneModel.Controller == default(IController)
-                ? Observable.Throw<SceneModel>(new NullReferenceException($"The component what implements `CAFU.Core.Presentation.View.IController` does not found in destination scene. Please check `{entity.Name}` scenes to see if `Controller` component is attached."))
-                : Observable.Return(sceneModel);
+            return Observable.Return(sceneModel);
         }
     }
 }
