@@ -49,10 +49,10 @@ namespace CAFU.Routing.Data.DataStore
         {
             if (!SceneEntityCacheMap.ContainsKey(sceneName))
             {
-                // エディタ実行でない場合には「読み込まれていない」旨を Exception として Throw する
-                if (!Application.isEditor)
+                // エディタの場合に「読み込まれていない」旨を警告する
+                if (Application.isEditor)
                 {
-                    return Observable.Throw<SceneEntity>(new ArgumentException($"Scene '{sceneName}' has not loaded yet."));
+                    Debug.LogWarning($"Scene '{sceneName}' has not loaded yet.");
                 }
 
                 // エディタ実行の場合のみ、初期シーンの直接読み込みを考慮して値を疑似構築する
