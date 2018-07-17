@@ -13,7 +13,7 @@
 # Install
 
 ```shell
-$ npm install github:umm-projects/cafu_routing
+$ npm install github:umm/cafu_routing
 ```
 
 # Usage
