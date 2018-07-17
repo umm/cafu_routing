@@ -1,6 +1,6 @@
 {
   "name": "@umm/cafu_routing",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Routing UseCase for CAFU",
   "homepage": "https://github.com/umm/cafu_routing",
   "bugs": {
