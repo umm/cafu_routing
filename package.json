@@ -1,6 +1,6 @@
 {
   "name": "@umm/cafu_routing",
-  "version": "2.4.4",
+  "version": "3.0.0",
   "description": "Routing UseCase for CAFU",
   "homepage": "https://github.com/umm/cafu_routing",
   "bugs": {
@@ -25,7 +25,7 @@
     "scripts"
   ],
   "dependencies": {
-    "@umm/assetbundle_management": "umm/assetbundle_management#^1.0.0",
+    "@umm/assetbundle_management": "umm/assetbundle_management#^2.0.0",
     "@umm/cafu_core": "umm/cafu_core#^2.0.0",
     "@umm/context_management": "umm/context_management#^1.0.0",
     "@umm/scene_attribute": "umm/scene_attribute#^1.0.0",
