@@ -5,7 +5,7 @@
         "umm@cafu_core",
         "umm@context_management",
         "umm@scene_attribute",
-        "umm@unirx",
+        "UniRx",
         "umm@unirx_observablelifecyclemonobehaviour"
     ],
     "optionalUnityReferences": [],

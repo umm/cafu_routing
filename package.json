@@ -9,7 +9,7 @@
   "scripts": {
     "umm:init": "umm-init",
     "umm:generate_assembly_definition": "umm-generate_assembly_definition",
-    "umm:module:install": "umm-module-install",
+    "umm:module:install": "umm-module-install && ./scripts/first-aid-for-upm.sh",
     "umm:module:uninstall": "umm-module-uninstall",
     "postinstall": "npm run --silent umm:module:install",
     "postuninstall": "npm run --silent umm:module:uninstall"
@@ -30,7 +30,6 @@
     "@umm/context_management": "umm/context_management#^1.0.0",
     "@umm/scene_attribute": "umm/scene_attribute#^1.0.0",
     "@umm/scripts": "umm/scripts#^1.0.0",
-    "@umm/unirx": "umm/unirx#^2.0.0",
     "@umm/unirx_observablelifecyclemonobehaviour": "umm/unirx_observablelifecyclemonobehaviour#^1.0.0"
   },
   "devDependencies": {}
